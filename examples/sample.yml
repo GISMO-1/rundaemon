@@ -1,0 +1,16 @@
+log_level: info
+services:
+  - name: web
+    cmd: python
+    args: ["-m", "http.server", "8081"]
+    restart: on-failure
+    health:
+      type: http
+      url: "http://127.0.0.1:8081/"
+      timeout_ms: 1500
+      interval_ms: 2000
+
+  - name: pinger
+    cmd: bash
+    args: ["-lc", "for i in {1..3}; do echo tick:$i; sleep 1; done"]
+    restart: never
